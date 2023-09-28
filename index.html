@@ -8,6 +8,11 @@
       href="https://fonts.googleapis.com/css2?family=Kumbh+Sans&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style.css" />
     <!-- https://fonts.google.com/specimen/Kumbh+Sans -->
     <link rel="stylesheet" href="fontawesome/css/all.min.css" />
     <!-- https://fontawesome.com/-->
@@ -278,157 +283,129 @@
     </main>
 
     <script src="js/plugins.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  $(window).on("load", function () {
-    $("body").addClass("loaded");
-  });
+    <script>
+      $(window).on("load", function () {
+        $("body").addClass("loaded");
+      });
 
-  $(function () {
-    /*************** Navigation *****************/
+      $(function () {
+        /*************** Navigation *****************/
 
-    const tmMainNav = $("#tm-main-nav");
+        const tmMainNav = $("#tm-main-nav");
 
-    tmMainNav.singlePageNav({
-      filter: ":not(.external)",
-    });
-
-    $(".navbar-toggler").click(function (e) {
-      e.stopPropagation();
-      tmMainNav.toggleClass("show");
-    });
-
-    $("html").click(function (e) {
-      $("#tm-main-nav").removeClass("show");
-    });
-
-    /****************** Smooth Scrolling *****************/
-
-    $(".tm-btn-next").on("click", function (event) {
-      var target = $(this).attr("href");
-      scrollToSection(target);
-    });
-
-    $(".tm-brand-icon").on("click", function (event) {
-      scrollToSection("#homepage");
-    });
-
-    function scrollToSection(target) {
-      var $target = $(target);
-      $("html, body").animate(
-        {
-          scrollTop: $target.offset().top,
-        },
-        800
-      );
-    }
-
-    /****************** Gallery ******************/
-
-    const galleryItems = document.querySelector(".tm-gallery").children;
-    const itemsPerPage = 10;
-    const totalPages = Math.ceil(galleryItems.length / itemsPerPage);
-    const pageAttribute = "data-page";
-
-    function setPagination(currentPage) {
-      for (let i = 1; i <= totalPages; i++) {
-        var $pager = "";
-
-        if (currentPage == i) {
-          $pager = $(
-            '<a href="javascript:void(0);" class="active tm-paging-link" ' +
-              pageAttribute +
-              '="' +
-              i +
-              '"></a>'
-          );
-        } else {
-          $pager = $(
-            '<a href="javascript:void(0);" class="tm-paging-link" ' +
-              pageAttribute +
-              '="' +
-              i +
-              '"></a>'
-          );
-        }
-
-        $pager.html(i);
-
-        $pager.click(function () {
-          $(".tm-paging-link").removeClass("active");
-          $(this).addClass("active");
-          var page = $(this).eq(0).attr(pageAttribute);
-          showItems(page);
+        tmMainNav.singlePageNav({
+          filter: ":not(.external)",
         });
 
-        $pager.appendTo($(".tm-paging"));
-      }
-    }
+        $(".navbar-toggler").click(function (e) {
+          e.stopPropagation();
+          tmMainNav.toggleClass("show");
+        });
 
-    function showItems(currentPage) {
-      for (let i = 0; i < galleryItems.length; i++) {
-        galleryItems[i].classList.remove("show");
-        galleryItems[i].classList.add("hide");
+        $("html").click(function (e) {
+          $("#tm-main-nav").removeClass("show");
+        });
 
-        if (
-          i >= currentPage * itemsPerPage - itemsPerPage &&
-          i < currentPage * itemsPerPage
-        ) {
-          galleryItems[i].classList.remove("hide");
-          galleryItems[i].classList.add("show");
+        /****************** Smooth Scrolling *****************/
+
+        $(".tm-btn-next").on("click", function (event) {
+          if (this.hash !== "") {
+            event.preventDefault();
+            var hash = this.hash;
+
+            $("html, body").animate(
+              {
+                scrollTop: $(hash).offset().top,
+              },
+              800,
+              function () {
+                // window.location.hash = hash;
+              }
+            );
+          }
+        });
+
+        $(".tm-brand-icon").on("click", function (event) {
+          $("html, body").animate(
+            {
+              scrollTop: $("#homepage").offset().top,
+            },
+            800
+          );
+        });
+
+        /****************** Gallery ******************/
+
+        const galleryItems = document.querySelector(".tm-gallery").children;
+        const itemsPerPage = 10;
+        const totalPages = Math.ceil(galleryItems.length / itemsPerPage);
+        const pageAttribute = "data-page";
+
+        function setPagination(currentPage) {
+          for (let i = 1; i <= totalPages; i++) {
+            var $pager = "";
+
+            if (currentPage == i) {
+              $pager = $(
+                '<a href="javascript:void(0);" class="active tm-paging-link" ' +
+                  pageAttribute +
+                  '="' +
+                  i +
+                  '"></a>'
+              );
+            } else {
+              $pager = $(
+                '<a href="javascript:void(0);" class="tm-paging-link" ' +
+                  pageAttribute +
+                  '="' +
+                  i +
+                  '"></a>'
+              );
+            }
+
+            $pager.html(i);
+
+            $pager.click(function () {
+              $(".tm-paging-link").removeClass("active");
+              $(this).addClass("active");
+              var page = $(this).eq(0).attr(pageAttribute);
+              showItems(page);
+            });
+
+            $pager.appendTo($(".tm-paging"));
+          }
         }
-      }
-    }
 
-    setPagination(1);
-    showItems(1);
+        function showItems(currentPage) {
+          for (let i = 0; i < galleryItems.length; i++) {
+            galleryItems[i].classList.remove("show");
+            galleryItems[i].classList.add("hide");
 
-    /****************** Magnific Popup ***********/
+            if (
+              i >= currentPage * itemsPerPage - itemsPerPage &&
+              i < currentPage * itemsPerPage
+            ) {
+              galleryItems[i].classList.remove("hide");
+              galleryItems[i].classList.add("show");
+            }
+          }
+        }
 
-    $(".tm-gallery").magnificPopup({
-      delegate: "a",
-      type: "image",
-      gallery: {
-        enabled: true,
-      },
-    });
-  });
+        setPagination(1);
+        showItems(1);
 
-  // Kode routing tambahan
-  function showPage(pageId) {
-    $(".tm-section").hide();
-    $(pageId).show();
-  }
+        /****************** Magnific Popup ***********/
 
-  function scrollToPage(target) {
-    scrollToSection(target);
-  }
-
-  if (window.location.hash) {
-    var hash = window.location.hash.substring(1); // Menghilangkan karakter "#" dari hash
-    showPage("#" + hash); // Menambahkan "#" kembali setelah menghilangkannya
-  } else {
-    showPage("#homepage");
-  }
-
-  $("#tm-main-nav a").click(function () {
-    var target = $(this).attr("href").substring(1); // Menghilangkan karakter "#" dari href
-    showPage("#" + target); // Menambahkan "#" kembali setelah menghilangkannya
-  });
-
-  $(".tm-btn-next").click(function () {
-    var target = $(this).attr("href").substring(1); // Menghilangkan karakter "#" dari href
-    scrollToPage("#" + target); // Menambahkan "#" kembali setelah menghilangkannya
-  });
-
-  $(".tm-brand img").click(function () {
-    showPage("#homepage");
-  });
-
-  $(window).on("hashchange", function () {
-    var hash = window.location.hash.substring(1); // Menghilangkan karakter "#" dari hash
-    showPage("#" + hash); // Menambahkan "#" kembali setelah menghilangkannya
-  });
-</script>
-</body>
+        $(".tm-gallery").magnificPopup({
+          delegate: "a",
+          type: "image",
+          gallery: {
+            enabled: true,
+          },
+        });
+      });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
 </html>
