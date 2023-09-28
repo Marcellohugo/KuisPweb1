@@ -305,30 +305,23 @@
     /****************** Smooth Scrolling *****************/
 
     $(".tm-btn-next").on("click", function (event) {
-      if (this.hash !== "") {
-        event.preventDefault();
-        var hash = this.hash;
-
-        $("html, body").animate(
-          {
-            scrollTop: $(hash).offset().top,
-          },
-          800,
-          function () {
-            // window.location.hash = hash;
-          }
-        );
-      }
+      var target = $(this).attr("href");
+      scrollToSection(target);
     });
 
     $(".tm-brand-icon").on("click", function (event) {
+      scrollToSection("#homepage");
+    });
+
+    function scrollToSection(target) {
+      var $target = $(target);
       $("html, body").animate(
         {
-          scrollTop: $("#homepage").offset().top,
+          scrollTop: $target.offset().top,
         },
         800
       );
-    });
+    }
 
     /****************** Gallery ******************/
 
@@ -407,21 +400,25 @@
     $(pageId).show();
   }
 
+  function scrollToPage(target) {
+    scrollToSection(target);
+  }
+
   if (window.location.hash) {
-    var hash = window.location.hash;
-    showPage(hash);
+    var hash = window.location.hash.substring(1); // Menghilangkan karakter "#" dari hash
+    showPage("#" + hash); // Menambahkan "#" kembali setelah menghilangkannya
   } else {
     showPage("#homepage");
   }
 
   $("#tm-main-nav a").click(function () {
-    var target = $(this).attr("href");
-    showPage(target);
+    var target = $(this).attr("href").substring(1); // Menghilangkan karakter "#" dari href
+    showPage("#" + target); // Menambahkan "#" kembali setelah menghilangkannya
   });
 
   $(".tm-btn-next").click(function () {
-    var target = $(this).attr("href");
-    showPage(target);
+    var target = $(this).attr("href").substring(1); // Menghilangkan karakter "#" dari href
+    scrollToPage("#" + target); // Menambahkan "#" kembali setelah menghilangkannya
   });
 
   $(".tm-brand img").click(function () {
@@ -429,8 +426,8 @@
   });
 
   $(window).on("hashchange", function () {
-    var hash = window.location.hash;
-    showPage(hash);
+    var hash = window.location.hash.substring(1); // Menghilangkan karakter "#" dari hash
+    showPage("#" + hash); // Menambahkan "#" kembali setelah menghilangkannya
   });
 </script>
 </body>
