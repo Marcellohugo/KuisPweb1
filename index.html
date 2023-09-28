@@ -278,127 +278,160 @@
     </main>
 
     <script src="js/plugins.js"></script>
-    <script>
-      $(window).on("load", function () {
-        $("body").addClass("loaded");
-      });
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(window).on("load", function () {
+    $("body").addClass("loaded");
+  });
 
-      $(function () {
-        /*************** Navigation *****************/
+  $(function () {
+    /*************** Navigation *****************/
 
-        const tmMainNav = $("#tm-main-nav");
+    const tmMainNav = $("#tm-main-nav");
 
-        tmMainNav.singlePageNav({
-          filter: ":not(.external)",
-        });
+    tmMainNav.singlePageNav({
+      filter: ":not(.external)",
+    });
 
-        $(".navbar-toggler").click(function (e) {
-          e.stopPropagation();
-          tmMainNav.toggleClass("show");
-        });
+    $(".navbar-toggler").click(function (e) {
+      e.stopPropagation();
+      tmMainNav.toggleClass("show");
+    });
 
-        $("html").click(function (e) {
-          $("#tm-main-nav").removeClass("show");
-        });
+    $("html").click(function (e) {
+      $("#tm-main-nav").removeClass("show");
+    });
 
-        /****************** Smooth Scrolling *****************/
+    /****************** Smooth Scrolling *****************/
 
-        $(".tm-btn-next").on("click", function (event) {
-          if (this.hash !== "") {
-            event.preventDefault();
-            var hash = this.hash;
+    $(".tm-btn-next").on("click", function (event) {
+      if (this.hash !== "") {
+        event.preventDefault();
+        var hash = this.hash;
 
-            $("html, body").animate(
-              {
-                scrollTop: $(hash).offset().top,
-              },
-              800,
-              function () {
-                // window.location.hash = hash;
-              }
-            );
-          }
-        });
-
-        $(".tm-brand-icon").on("click", function (event) {
-          $("html, body").animate(
-            {
-              scrollTop: $("#homepage").offset().top,
-            },
-            800
-          );
-        });
-
-        /****************** Gallery ******************/
-
-        const galleryItems = document.querySelector(".tm-gallery").children;
-        const itemsPerPage = 10;
-        const totalPages = Math.ceil(galleryItems.length / itemsPerPage);
-        const pageAttribute = "data-page";
-
-        function setPagination(currentPage) {
-          for (let i = 1; i <= totalPages; i++) {
-            var $pager = "";
-
-            if (currentPage == i) {
-              $pager = $(
-                '<a href="javascript:void(0);" class="active tm-paging-link" ' +
-                  pageAttribute +
-                  '="' +
-                  i +
-                  '"></a>'
-              );
-            } else {
-              $pager = $(
-                '<a href="javascript:void(0);" class="tm-paging-link" ' +
-                  pageAttribute +
-                  '="' +
-                  i +
-                  '"></a>'
-              );
-            }
-
-            $pager.html(i);
-
-            $pager.click(function () {
-              $(".tm-paging-link").removeClass("active");
-              $(this).addClass("active");
-              var page = $(this).eq(0).attr(pageAttribute);
-              showItems(page);
-            });
-
-            $pager.appendTo($(".tm-paging"));
-          }
-        }
-
-        function showItems(currentPage) {
-          for (let i = 0; i < galleryItems.length; i++) {
-            galleryItems[i].classList.remove("show");
-            galleryItems[i].classList.add("hide");
-
-            if (
-              i >= currentPage * itemsPerPage - itemsPerPage &&
-              i < currentPage * itemsPerPage
-            ) {
-              galleryItems[i].classList.remove("hide");
-              galleryItems[i].classList.add("show");
-            }
-          }
-        }
-
-        setPagination(1);
-        showItems(1);
-
-        /****************** Magnific Popup ***********/
-
-        $(".tm-gallery").magnificPopup({
-          delegate: "a",
-          type: "image",
-          gallery: {
-            enabled: true,
+        $("html, body").animate(
+          {
+            scrollTop: $(hash).offset().top,
           },
+          800,
+          function () {
+            // window.location.hash = hash;
+          }
+        );
+      }
+    });
+
+    $(".tm-brand-icon").on("click", function (event) {
+      $("html, body").animate(
+        {
+          scrollTop: $("#homepage").offset().top,
+        },
+        800
+      );
+    });
+
+    /****************** Gallery ******************/
+
+    const galleryItems = document.querySelector(".tm-gallery").children;
+    const itemsPerPage = 10;
+    const totalPages = Math.ceil(galleryItems.length / itemsPerPage);
+    const pageAttribute = "data-page";
+
+    function setPagination(currentPage) {
+      for (let i = 1; i <= totalPages; i++) {
+        var $pager = "";
+
+        if (currentPage == i) {
+          $pager = $(
+            '<a href="javascript:void(0);" class="active tm-paging-link" ' +
+              pageAttribute +
+              '="' +
+              i +
+              '"></a>'
+          );
+        } else {
+          $pager = $(
+            '<a href="javascript:void(0);" class="tm-paging-link" ' +
+              pageAttribute +
+              '="' +
+              i +
+              '"></a>'
+          );
+        }
+
+        $pager.html(i);
+
+        $pager.click(function () {
+          $(".tm-paging-link").removeClass("active");
+          $(this).addClass("active");
+          var page = $(this).eq(0).attr(pageAttribute);
+          showItems(page);
         });
-      });
-    </script>
-  </body>
+
+        $pager.appendTo($(".tm-paging"));
+      }
+    }
+
+    function showItems(currentPage) {
+      for (let i = 0; i < galleryItems.length; i++) {
+        galleryItems[i].classList.remove("show");
+        galleryItems[i].classList.add("hide");
+
+        if (
+          i >= currentPage * itemsPerPage - itemsPerPage &&
+          i < currentPage * itemsPerPage
+        ) {
+          galleryItems[i].classList.remove("hide");
+          galleryItems[i].classList.add("show");
+        }
+      }
+    }
+
+    setPagination(1);
+    showItems(1);
+
+    /****************** Magnific Popup ***********/
+
+    $(".tm-gallery").magnificPopup({
+      delegate: "a",
+      type: "image",
+      gallery: {
+        enabled: true,
+      },
+    });
+  });
+
+  // Kode routing tambahan
+  function showPage(pageId) {
+    $(".tm-section").hide();
+    $(pageId).show();
+  }
+
+  if (window.location.hash) {
+    var hash = window.location.hash;
+    showPage(hash);
+  } else {
+    showPage("#homepage");
+  }
+
+  $("#tm-main-nav a").click(function () {
+    var target = $(this).attr("href");
+    showPage(target);
+  });
+
+  $(".tm-btn-next").click(function () {
+    var target = $(this).attr("href");
+    showPage(target);
+  });
+
+  $(".tm-brand img").click(function () {
+    showPage("#homepage");
+  });
+
+  $(window).on("hashchange", function () {
+    var hash = window.location.hash;
+    showPage(hash);
+  });
+</script>
+</body>
 </html>
